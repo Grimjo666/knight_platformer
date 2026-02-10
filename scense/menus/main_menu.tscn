@@ -1,0 +1,86 @@
+[gd_scene load_steps=8 format=3 uid="uid://bgr4vnie8j3ep"]
+
+[ext_resource type="Script" uid="uid://d25anhelxb772" path="res://scripts/menus/main_menu/Bg.cs" id="1_3ghwr"]
+[ext_resource type="Texture2D" uid="uid://cqg5s7k4y0bbn" path="res://assets/Jungle Asset Pack/parallax background/plx-1.png" id="1_bgl73"]
+[ext_resource type="Texture2D" uid="uid://cy5sberdmwvrw" path="res://assets/Jungle Asset Pack/parallax background/plx-2.png" id="3_gfk3y"]
+[ext_resource type="Texture2D" uid="uid://cn1ikxtv5feuv" path="res://assets/Jungle Asset Pack/parallax background/plx-3.png" id="4_1w5rp"]
+[ext_resource type="Texture2D" uid="uid://dm8bulrwb4jb5" path="res://assets/Jungle Asset Pack/parallax background/plx-4.png" id="5_qp7hy"]
+[ext_resource type="Texture2D" uid="uid://bxwbn4flajvh5" path="res://assets/Jungle Asset Pack/parallax background/plx-5.png" id="6_j4fae"]
+[ext_resource type="Script" uid="uid://dv1lql6hd4ypm" path="res://scripts/menus/main_menu/MenuControl.cs" id="7_1w5rp"]
+
+[node name="main_menu" type="Node2D"]
+
+[node name="bg" type="Node2D" parent="."]
+script = ExtResource("1_3ghwr")
+
+[node name="Parallax2D" type="Parallax2D" parent="bg"]
+
+[node name="Plx1" type="Sprite2D" parent="bg/Parallax2D"]
+texture = ExtResource("1_bgl73")
+centered = false
+
+[node name="Parallax2D2" type="Parallax2D" parent="bg"]
+
+[node name="Plx2" type="Sprite2D" parent="bg/Parallax2D2"]
+texture = ExtResource("3_gfk3y")
+centered = false
+
+[node name="Parallax2D3" type="Parallax2D" parent="bg"]
+
+[node name="Plx3" type="Sprite2D" parent="bg/Parallax2D3"]
+texture = ExtResource("4_1w5rp")
+centered = false
+
+[node name="Parallax2D4" type="Parallax2D" parent="bg"]
+
+[node name="Plx4" type="Sprite2D" parent="bg/Parallax2D4"]
+texture = ExtResource("5_qp7hy")
+centered = false
+
+[node name="Parallax2D5" type="Parallax2D" parent="bg"]
+texture_repeat = 2
+
+[node name="Plx5" type="Sprite2D" parent="bg/Parallax2D5"]
+texture = ExtResource("6_j4fae")
+centered = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="menu_control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7_1w5rp")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/menu_control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -210.0
+offset_top = -94.0
+offset_right = 210.0
+offset_bottom = 94.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="play_btn" type="Button" parent="CanvasLayer/menu_control/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 35
+text = "Play"
+
+[node name="quit_btn" type="Button" parent="CanvasLayer/menu_control/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 35
+text = "Quit
+"
+
+[connection signal="pressed" from="CanvasLayer/menu_control/VBoxContainer/play_btn" to="CanvasLayer/menu_control" method="_on_play_btn_pressed"]
+[connection signal="pressed" from="CanvasLayer/menu_control/VBoxContainer/quit_btn" to="CanvasLayer/menu_control" method="_on_quit_btn_pressed"]
