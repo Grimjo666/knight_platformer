@@ -13,6 +13,7 @@ public class Health
 {
     int MaxHealth = 100;
     public int CurrentHealth;
+    public event Action<string> OnHealthStateChanged;
 
     public Health()
     {
@@ -23,14 +24,16 @@ public class Health
     public void TakeDamage(int damage)
     {
         CurrentHealth -= damage;
-        if (CurrentHealth > 0) {
-            EventBus.Publish(HealthState.TakeDamage.ToString());
-        }
+        EventBus.PublishHealthChanged(CurrentHealth, MaxHealth);
+
+        if (CurrentHealth > 0)
+            OnHealthStateChanged?.Invoke(HealthState.TakeDamage.ToString());        
+        
         else
             CurrentHealth = 0;
         
         if (IsDead())
-            EventBus.Publish(HealthState.Died.ToString());
+            OnHealthStateChanged?.Invoke(HealthState.Died.ToString());
     }
 
     public void Heal(int amount)

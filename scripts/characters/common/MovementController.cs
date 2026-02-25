@@ -7,7 +7,8 @@ public enum MovementState
     Idle,
     Run,
     Jump,
-    TurnAround
+    TurnAround,
+    Walk
 }
 
 
@@ -20,13 +21,14 @@ public class MovementController
     protected float acceleration;
     protected float friction;
     protected float jumpVelocity;
-    protected IInputProvider input;
     protected float currentSpeed;
     protected int previousDirectionX;
-    
+
+    protected IInputProvider input;
+
+    public event Action<string> OnMovementStateChanged;
     protected MovementState currentState = MovementState.Idle;
 
-    public event Action<string> AnimationRequested;
 
 
     public MovementController(CharacterBody2D character, IInputProvider input, float maxSpeed, float acceleration, float friction, float jumpVelocity)
@@ -82,7 +84,7 @@ public class MovementController
         if (newState != currentState)
         {
             currentState = newState;
-            AnimationRequested?.Invoke(newState.ToString());
+            OnMovementStateChanged?.Invoke(newState.ToString());
         }
 
         character.Velocity = velocity;

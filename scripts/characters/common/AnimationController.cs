@@ -15,15 +15,13 @@ public class AnimationController {
 
         state = (AnimationNodeStateMachinePlayback)animationTree.Get("parameters/playback");
 
-        EventBus.StateChanged += OnStateChanged;
         }
 
     public void Update() {
         animationTree.Set("parameters/Run/TimeScale/scale", movementController.SpeedRatio);
     }
 
-    protected virtual void OnStateChanged(string stateName) {
-        GD.Print($"State changed: {stateName}");
+    public virtual void OnStateChanged(string stateName) {
         state.Travel(stateName);
     }
     

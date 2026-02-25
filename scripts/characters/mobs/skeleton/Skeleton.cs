@@ -21,6 +21,7 @@ public partial class Skeleton : BaseEnemy
 		animationController = new AnimationController(this, movementController); 
 
 	}
+
 	public override void _PhysicsProcess(double delta)
 	{
 		movementController.Update(delta);

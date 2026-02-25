@@ -42,9 +42,16 @@ public partial class Player : CharacterBody2D
 		animationController = new AnimationController(this, movementController); 
 		attackController = new AttackController(this, AttackScene, inputProvider);
 
+		// Проброс событий в анимационный контроллер
+		health.OnHealthStateChanged += animationController.OnStateChanged;
+		movementController.OnMovementStateChanged += animationController.OnStateChanged;
+
 	}
+
 	public override void _PhysicsProcess(double delta)
 	{
+		if (health.IsDead())
+			return;	
 		movementController.Update(delta);
 		attackController.Update(delta);
 	}
@@ -73,10 +80,6 @@ public partial class Player : CharacterBody2D
 			var enemy = area.Owner as BaseEnemy;
 			if (enemy != null)
 				health.TakeDamage(enemy.CollisionDamage);
-			{
-				
-				GD.Print($"Player took {enemy.CollisionDamage} damage, health now {health.CurrentHealth}");
-			}
 		}
 	}
 
