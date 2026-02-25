@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://bw4x447ivitae"]
+
+[ext_resource type="Script" uid="uid://b3ul4xcinm310" path="res://scripts/common/GameRoot.cs" id="1_ansoo"]
+[ext_resource type="Texture2D" uid="uid://4nxfut7xpqlx" path="res://assets/healthbar/HealthBar DARK.png" id="2_rps3v"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y4ves"]
+atlas = ExtResource("2_rps3v")
+region = Rect2(16.46791, 163.3746, 61.998535, 9.443283)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ycwbr"]
+atlas = ExtResource("2_rps3v")
+region = Rect2(17.532888, 151.64063, 59.82492, 6.6176453)
+
+[node name="GameRoot" type="Node2D"]
+script = ExtResource("1_ansoo")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HealthBar" type="TextureProgressBar" parent="CanvasLayer"]
+offset_left = 43.0
+offset_top = 33.0
+offset_right = 361.0
+offset_bottom = 78.0
+nine_patch_stretch = true
+texture_under = SubResource("AtlasTexture_y4ves")
+texture_progress = SubResource("AtlasTexture_ycwbr")
+
+[node name="LevelContainer" type="Node2D" parent="."]

@@ -38,4 +38,7 @@ public class AIBehaviorController : IInputProvider
 
     public bool IsJumpPressed()
         => current?.IsJumpPressed() ?? false;
+
+    public bool IsAttackPressed()
+        => false; // AI does not attack for now
 }

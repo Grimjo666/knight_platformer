@@ -44,7 +44,6 @@ public class PatrolBehavior : IAIBehavior
                 {
                     dir *= -1;
                     RecalculatePatrolRange();
-                    sensors.FlipRaycastDirection();
                     state = PatrolState.Walking;
                 }
                 break;
@@ -71,7 +70,6 @@ public class PatrolBehavior : IAIBehavior
         // граница патруля — только если идём в неё
         if ((x <= minX && dir < 0) || (x >= maxX && dir > 0))
         {   
-            GD.Print($"Reached patrol boundary at {x:F2}, reversing direction. New range: [{minX:F2}, {maxX:F2}]");
             StartTurnPause();
             return;
         }
@@ -79,7 +77,6 @@ public class PatrolBehavior : IAIBehavior
         // стена
         if (sensors.IsFacingWall())
         {
-            GD.Print("Facing wall, reversing direction.");
             StartTurnPause();
             return;
         }
@@ -87,7 +84,6 @@ public class PatrolBehavior : IAIBehavior
         // обрыв — только если стоим на земле
         if (character.IsOnFloor() && !sensors.IsOnFloor())
         {
-            GD.Print("Facing ledge, reversing direction.");
             StartTurnPause();
             return;
         }
@@ -95,7 +91,6 @@ public class PatrolBehavior : IAIBehavior
         // ступенька
         if (sensors.IsFacingStage())
         {
-            GD.Print("Facing step, requesting jump.");
             jumpRequested = true;
         }
     }

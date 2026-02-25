@@ -8,8 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://bxwbn4flajvh5" path="res://assets/Jungle Asset Pack/parallax background/plx-5.png" id="6_n2u30"]
 [ext_resource type="Texture2D" uid="uid://cijxvmbo4avnj" path="res://assets/Jungle Asset Pack/jungle tileset/jungle tileset.png" id="7_el3cg"]
 [ext_resource type="Texture2D" uid="uid://cjcn1qp2uil8g" path="res://assets/Pixel Woods Asset Pack/Tileset/Pixel_Woods_Tileset.png" id="8_tjxid"]
-[ext_resource type="PackedScene" uid="uid://w4hi5bk1a3e8" path="res://scense/characters/player/player.tscn" id="9_oa5c5"]
-[ext_resource type="PackedScene" uid="uid://cryl0amptmlo3" path="res://scense/characters/mobs/skeleton.tscn" id="10_150c5"]
+[ext_resource type="PackedScene" uid="uid://w4hi5bk1a3e8" path="res://scenes/characters/player/player.tscn" id="9_oa5c5"]
+[ext_resource type="PackedScene" uid="uid://cryl0amptmlo3" path="res://scenes/characters/mobs/skeleton.tscn" id="10_150c5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tjxid"]
 texture = ExtResource("7_el3cg")
@@ -664,3 +664,5 @@ collision_layer = 4
 [node name="Player" parent="." instance=ExtResource("9_oa5c5")]
 position = Vector2(886, 972)
 collision_layer = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]

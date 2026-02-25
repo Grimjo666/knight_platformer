@@ -58,12 +58,19 @@ ui_up={
 , Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":-1,"axis":1,"axis_value":-1.0,"script":null)
 ]
 }
+attack={
+"deadzone": 0.5,
+"events": [Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":-1,"button_index":1,"pressure":0.0,"pressed":true,"script":null)
+]
+}
 
 [layer_names]
 
 2d_physics/layer_1="world"
 2d_physics/layer_2="player"
 2d_physics/layer_3="mobs"
+2d_physics/layer_6="HurtBox"
+2d_physics/layer_7="HitBox"
 
 [rendering]
 

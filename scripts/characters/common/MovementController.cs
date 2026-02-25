@@ -2,16 +2,16 @@ using System;
 using Godot;
 
 
-public enum BaseCharacterState
+public enum MovementState
 {
     Idle,
-    Running,
-    Jumping,
-    TurnedAround
+    Run,
+    Jump,
+    TurnAround
 }
 
 
-public abstract class BaseMovementController
+public class MovementController
 {
     protected CharacterBody2D character;
 
@@ -24,15 +24,19 @@ public abstract class BaseMovementController
     protected float currentSpeed;
     protected int previousDirectionX;
     
-    protected BaseCharacterState currentState = BaseCharacterState.Idle;
+    protected MovementState currentState = MovementState.Idle;
 
-    public event Action<BaseCharacterState> AnimationRequested;
+    public event Action<string> AnimationRequested;
 
 
-    protected BaseMovementController(CharacterBody2D character, IInputProvider input)
+    public MovementController(CharacterBody2D character, IInputProvider input, float maxSpeed, float acceleration, float friction, float jumpVelocity)
     {
         this.character = character;
         this.input = input;
+        this.maxSpeed = maxSpeed;
+        this.acceleration = acceleration;
+        this.friction = friction;
+        this.jumpVelocity = jumpVelocity;
     }
 
 
@@ -48,25 +52,25 @@ public abstract class BaseMovementController
         Vector2 direction = input.GetDirection();
         currentSpeed = Mathf.MoveToward(velocity.X, direction.X * maxSpeed, acceleration * (float)delta);
 
-        BaseCharacterState newState = currentState;
+        MovementState newState = currentState;
 
         if (input.IsJumpPressed() && character.IsOnFloor())
         {
             velocity.Y = jumpVelocity;
-            newState = BaseCharacterState.Jumping;
+            newState = MovementState.Jump;
         }
         else if (character.IsOnFloor())
         {
             if (CheckIsTurnAround(direction.X))
-                newState = BaseCharacterState.TurnedAround;
+                newState = MovementState.TurnAround;
             else if (Mathf.Abs(currentSpeed) > 0.01f)
             {
-                newState = BaseCharacterState.Running;
+                newState = MovementState.Run;
                 velocity.X = currentSpeed;
             }
             else
             {
-                newState = BaseCharacterState.Idle;
+                newState = MovementState.Idle;
                 velocity.X = Mathf.MoveToward(velocity.X, 0, friction * (float)delta);
             }
         }
@@ -78,7 +82,7 @@ public abstract class BaseMovementController
         if (newState != currentState)
         {
             currentState = newState;
-            AnimationRequested?.Invoke(newState);
+            AnimationRequested?.Invoke(newState.ToString());
         }
 
         character.Velocity = velocity;

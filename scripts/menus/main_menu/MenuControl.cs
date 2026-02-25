@@ -10,6 +10,6 @@ public partial class MenuControl : Control
 
 	private void _on_play_btn_pressed()
 	{
-		GetTree().ChangeSceneToFile("res://scense/levels/forest_level.tscn");
+		GetTree().ChangeSceneToFile("res://scenes/common/game_root.tscn");
 	}
 }

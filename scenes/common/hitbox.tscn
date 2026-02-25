@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://bchyljqb2djg1"]
+
+[ext_resource type="Script" uid="uid://cfp1qef00uhdi" path="res://scripts/common/HitBox.cs" id="1_e5l4v"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fc4lu"]
+size = Vector2(11, 10)
+
+[node name="HitBox" type="Area2D"]
+collision_layer = 64
+collision_mask = 32
+script = ExtResource("1_e5l4v")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_fc4lu")
