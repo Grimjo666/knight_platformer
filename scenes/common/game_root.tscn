@@ -9,7 +9,7 @@ region = Rect2(16.888996, 163.3746, 61.57745, 9.443283)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ycwbr"]
 atlas = ExtResource("2_rps3v")
-region = Rect2(17.532888, 151.64063, 59.82492, 6.6176453)
+region = Rect2(16.60809, 151.00565, 60.74972, 7.763809)
 
 [node name="GameRoot" type="Node2D"]
 script = ExtResource("1_ansoo")

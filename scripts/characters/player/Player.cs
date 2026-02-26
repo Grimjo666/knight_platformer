@@ -26,6 +26,9 @@ public partial class Player : CharacterBody2D
 	private AnimationController animationController;
 	private AttackController attackController;
 	private Health health;
+	private bool isInvincible = false;
+	private float invincibilityTimer = 0f;
+	public float InvincibilityDuration = 0.5f;
 	[Export] public PackedScene AttackScene;
 
 	[Export]
@@ -51,6 +54,7 @@ public partial class Player : CharacterBody2D
 			return;	
 		movementController.Update(delta);
 		attackController.Update(delta);
+		InvincibleHandler(delta);
 	}
 
 	public override void _Process(double delta)
@@ -68,15 +72,29 @@ public partial class Player : CharacterBody2D
 		var rotationRoot = GetNode<Node2D>("RotationRoot");
 		rotationRoot.Scale = new Vector2(Velocity.X < 0 ? -1 : 1, 1);
 	}
+
+	protected void InvincibleHandler(double delta)
+	{
+		if (isInvincible)
+		{
+			invincibilityTimer -= (float)delta;
+			if (invincibilityTimer <= 0f)
+				isInvincible = false;
+		}
+	} 
 	
 
 	public void _on_hurt_box_area_entered(Area2D area)
 	{
-		if (area.IsInGroup("mobs_hitbox"))
+		if (area.IsInGroup("mobs_hitbox") && !isInvincible)
 		{
 			var enemy = area.Owner as BaseEnemy;
 			if (enemy != null)
 			{
+
+				isInvincible = true;
+				invincibilityTimer = InvincibilityDuration;
+
 				health.TakeDamage(enemy.CollisionDamage);
 				if (!health.IsDead())
 				{

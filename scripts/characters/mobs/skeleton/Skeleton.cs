@@ -6,7 +6,7 @@ public partial class Skeleton : BaseEnemy
 	private MovementController movementController;
 	private AnimationController animationController;
 	private AIBehaviorController inputProvider;
-
+	private Health health;
 
 	[Export]
 	public CharacterSettings SkeletonSettings;
@@ -18,8 +18,9 @@ public partial class Skeleton : BaseEnemy
 		inputProvider = new AIBehaviorController(this);
 		movementController = new MovementController(this, inputProvider, SkeletonSettings);
 		animationController = new AnimationController(this, movementController); 
-
+		health = new Health();
 		movementController.OnMovementStateChanged += animationController.OnStateChanged;
+		health.OnHealthStateChanged += animationController.OnStateChanged;
 
 	}
 
@@ -45,5 +46,22 @@ public partial class Skeleton : BaseEnemy
 		rotationRoot.Scale = new Vector2(Velocity.X < 0 ? -1 : 1, 1);
 	}
 
+	// public void _on_hurt_box_area_entered(Area2D area)
+	// {
+	// 	if (area.IsInGroup("mobs_hitbox"))
+	// 	{
+	// 		var player = area.Owner as Player;
+	// 		if (player != null)
+	// 		{
+
+
+	// 			health.TakeDamage(player.CollisionDamage);
+	// 			if (!health.IsDead())
+	// 			{
+	// 				movementController.ApplyKnockback(player.GlobalPosition);
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 }

@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://bchyljqb2djg1" path="res://scenes/common/hitbox.tscn" id="2_djqtb"]
 [ext_resource type="Texture2D" uid="uid://tnochyl1c3ye" path="res://assets/player/_Jump.png" id="2_ii6jb"]
 [ext_resource type="Texture2D" uid="uid://bjsej887hc0du" path="res://assets/player/_Run.png" id="3_5y6fm"]
+[ext_resource type="Resource" uid="uid://ccouc43wq7ng" path="res://resources/character_setting/player_settings.tres" id="3_42irl"]
 [ext_resource type="Texture2D" uid="uid://co1jhpqlofap6" path="res://assets/player/_Death.png" id="3_xuses"]
 [ext_resource type="Texture2D" uid="uid://cvlf5fxqcwstn" path="res://assets/player/_TurnAround.png" id="5_5y6fm"]
 [ext_resource type="Texture2D" uid="uid://syjwssdah4mf" path="res://assets/player/_Hit.png" id="6_mk55u"]
@@ -288,8 +289,6 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bsn6e"]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_blysn"]
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_hv5x3"]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ykrpk"]
@@ -305,10 +304,10 @@ states/Run/node = SubResource("AnimationNodeBlendTree_ibxyv")
 states/Run/position = Vector2(388, 133)
 states/Start/position = Vector2(175, 26)
 states/TakeDamage/node = SubResource("AnimationNodeAnimation_42irl")
-states/TakeDamage/position = Vector2(587, 116)
+states/TakeDamage/position = Vector2(652, 109)
 states/TurnAround/node = SubResource("AnimationNodeBlendTree_0fi7d")
 states/TurnAround/position = Vector2(416, 239)
-transitions = ["TurnAround", "Run", SubResource("AnimationNodeStateMachineTransition_yh4d1"), "Run", "TurnAround", SubResource("AnimationNodeStateMachineTransition_khglx"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_1ktu3"), "Idle", "Jump", SubResource("AnimationNodeStateMachineTransition_ihxdo"), "Jump", "Idle", SubResource("AnimationNodeStateMachineTransition_vx7ip"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_vcq7w"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_owu70"), "Idle", "TakeDamage", SubResource("AnimationNodeStateMachineTransition_3xnwo"), "TakeDamage", "Idle", SubResource("AnimationNodeStateMachineTransition_djydg"), "Run", "TakeDamage", SubResource("AnimationNodeStateMachineTransition_bsn6e"), "TakeDamage", "Run", SubResource("AnimationNodeStateMachineTransition_blysn"), "Idle", "Died", SubResource("AnimationNodeStateMachineTransition_hv5x3"), "Run", "Died", SubResource("AnimationNodeStateMachineTransition_ykrpk")]
+transitions = ["TurnAround", "Run", SubResource("AnimationNodeStateMachineTransition_yh4d1"), "Run", "TurnAround", SubResource("AnimationNodeStateMachineTransition_khglx"), "Start", "Idle", SubResource("AnimationNodeStateMachineTransition_1ktu3"), "Idle", "Jump", SubResource("AnimationNodeStateMachineTransition_ihxdo"), "Jump", "Idle", SubResource("AnimationNodeStateMachineTransition_vx7ip"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_vcq7w"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_owu70"), "Idle", "TakeDamage", SubResource("AnimationNodeStateMachineTransition_3xnwo"), "TakeDamage", "Idle", SubResource("AnimationNodeStateMachineTransition_djydg"), "Run", "TakeDamage", SubResource("AnimationNodeStateMachineTransition_bsn6e"), "Idle", "Died", SubResource("AnimationNodeStateMachineTransition_hv5x3"), "Run", "Died", SubResource("AnimationNodeStateMachineTransition_ykrpk")]
 graph_offset = Vector2(-210, -52)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mkbyt"]
@@ -609,6 +608,7 @@ animations = [{
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_5y6fm")
 AttackScene = ExtResource("2_djqtb")
+PlayerSettings = ExtResource("3_42irl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_51gi7")
