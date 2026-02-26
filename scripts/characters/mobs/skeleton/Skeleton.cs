@@ -7,18 +7,19 @@ public partial class Skeleton : BaseEnemy
 	private AnimationController animationController;
 	private AIBehaviorController inputProvider;
 
-	[Export] public float MaxSpeed = 80f;
-	[Export] public float Acceleration = 500f;
-	[Export] public float Friction = 1000f;
-	[Export] public float JumpVelocity = -400f;
+
+	[Export]
+	public CharacterSettings SkeletonSettings;
 
 
 
 	public override void _Ready()
 	{
 		inputProvider = new AIBehaviorController(this);
-		movementController = new MovementController(this, inputProvider, MaxSpeed, Acceleration, Friction, JumpVelocity);
+		movementController = new MovementController(this, inputProvider, SkeletonSettings);
 		animationController = new AnimationController(this, movementController); 
+
+		movementController.OnMovementStateChanged += animationController.OnStateChanged;
 
 	}
 

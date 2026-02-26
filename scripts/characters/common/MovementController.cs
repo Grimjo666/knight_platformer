@@ -16,13 +16,14 @@ public class MovementController
 {
     protected CharacterBody2D character;
 
-    // Определение характеристик движения
-    protected float maxSpeed;
-    protected float acceleration;
-    protected float friction;
-    protected float jumpVelocity;
+    protected CharacterSettings settings;
     protected float currentSpeed;
     protected int previousDirectionX;
+
+    public bool IsKnockbackActive { get; private set; }
+    private float knockbackTimer;
+    private float knockbackDuration;
+    private float knockbackHorizontalDamping;
 
     protected IInputProvider input;
 
@@ -30,35 +31,39 @@ public class MovementController
     protected MovementState currentState = MovementState.Idle;
 
 
-
-    public MovementController(CharacterBody2D character, IInputProvider input, float maxSpeed, float acceleration, float friction, float jumpVelocity)
+        public MovementController(CharacterBody2D character, IInputProvider input, CharacterSettings settings)
     {
         this.character = character;
         this.input = input;
-        this.maxSpeed = maxSpeed;
-        this.acceleration = acceleration;
-        this.friction = friction;
-        this.jumpVelocity = jumpVelocity;
+        this.settings = settings;
     }
 
 
-    public float SpeedRatio => Mathf.Clamp(Mathf.Abs(currentSpeed) / maxSpeed, 0.1f, 1f);
+    public float SpeedRatio => Mathf.Clamp(Mathf.Abs(currentSpeed) / settings.MaxSpeed, 0.1f, 1f);
 
     public void Update(double delta)
     {
+        float deltaF = (float)delta;
+
+        if (IsKnockbackActive)
+        {
+            UpdateKnockback(deltaF);
+            return;
+        }
+
         Vector2 velocity = character.Velocity;
 
         if (!character.IsOnFloor())
-            velocity += character.GetGravity() * (float)delta;
+            velocity += character.GetGravity() * deltaF;
 
         Vector2 direction = input.GetDirection();
-        currentSpeed = Mathf.MoveToward(velocity.X, direction.X * maxSpeed, acceleration * (float)delta);
+        currentSpeed = Mathf.MoveToward(velocity.X, direction.X * settings.MaxSpeed, settings.Acceleration * deltaF);
 
         MovementState newState = currentState;
 
         if (input.IsJumpPressed() && character.IsOnFloor())
         {
-            velocity.Y = jumpVelocity;
+            velocity.Y = settings.JumpVelocity;
             newState = MovementState.Jump;
         }
         else if (character.IsOnFloor())
@@ -73,7 +78,7 @@ public class MovementController
             else
             {
                 newState = MovementState.Idle;
-                velocity.X = Mathf.MoveToward(velocity.X, 0, friction * (float)delta);
+                velocity.X = Mathf.MoveToward(velocity.X, 0, settings.Friction * deltaF);
             }
         }
         else
@@ -97,6 +102,39 @@ public class MovementController
     {
         return directionX != 0 && previousDirectionX != 0 &&
                Mathf.Sign(directionX) != Mathf.Sign(previousDirectionX) &&
-               (Mathf.Abs(Mathf.Abs(currentSpeed) - maxSpeed) < 70f);
+               (Mathf.Abs(Mathf.Abs(currentSpeed) - settings.MaxSpeed) < 70f);
+    }
+
+    public void ApplyKnockback(Vector2 source)
+    {
+        float directionX = Mathf.Sign(character.GlobalPosition.X - source.X);
+        if (Mathf.Abs(directionX) < Mathf.Epsilon)
+            directionX = previousDirectionX != 0 ? previousDirectionX : 1f;
+
+        knockbackDuration = Mathf.Max(0.01f, settings.KnockbackDuration);
+        knockbackHorizontalDamping = Mathf.Max(0f, settings.KnockbackDamping);
+        knockbackTimer = knockbackDuration;
+
+        IsKnockbackActive = true;
+        currentSpeed = 0f;
+
+        character.Velocity = new Vector2(directionX * Mathf.Abs(settings.KnockbackHorizontal), -Mathf.Abs(settings.KnockbackUpward));
+    }
+
+    private void UpdateKnockback(float delta)
+    {
+        Vector2 velocity = character.Velocity;
+        velocity += character.GetGravity() * delta;
+        velocity.X = Mathf.MoveToward(velocity.X, 0f, knockbackHorizontalDamping * delta);
+
+        character.Velocity = velocity;
+        character.MoveAndSlide();
+
+        knockbackTimer -= delta;
+        if (knockbackTimer <= 0f)
+        {
+            IsKnockbackActive = false;
+            currentSpeed = character.Velocity.X;
+        }
     }
 }

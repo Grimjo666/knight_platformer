@@ -28,17 +28,14 @@ public partial class Player : CharacterBody2D
 	private Health health;
 	[Export] public PackedScene AttackScene;
 
-
-	[Export] public float MaxSpeed = 250f;
-	[Export] public float Acceleration = 700f;
-	[Export] public float Friction = 1200f;
-	[Export] public float JumpVelocity = -400f;
+	[Export]
+	public CharacterSettings PlayerSettings;
 
 	public override void _Ready()
 	{	
 		var inputProvider = new PlayerInputProvider();
 		health = new Health();
-		movementController = new MovementController(this, inputProvider, MaxSpeed, Acceleration, Friction, JumpVelocity);
+		movementController = new MovementController(this, inputProvider, PlayerSettings);
 		animationController = new AnimationController(this, movementController); 
 		attackController = new AttackController(this, AttackScene, inputProvider);
 
@@ -79,7 +76,13 @@ public partial class Player : CharacterBody2D
 		{
 			var enemy = area.Owner as BaseEnemy;
 			if (enemy != null)
+			{
 				health.TakeDamage(enemy.CollisionDamage);
+				if (!health.IsDead())
+				{
+					movementController.ApplyKnockback(enemy.GlobalPosition);
+				}
+			}
 		}
 	}
 

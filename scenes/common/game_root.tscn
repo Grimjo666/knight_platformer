@@ -5,7 +5,7 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y4ves"]
 atlas = ExtResource("2_rps3v")
-region = Rect2(16.46791, 163.3746, 61.998535, 9.443283)
+region = Rect2(16.888996, 163.3746, 61.57745, 9.443283)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ycwbr"]
 atlas = ExtResource("2_rps3v")
