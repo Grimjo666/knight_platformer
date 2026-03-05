@@ -51,7 +51,7 @@ public partial class Player : CharacterBody2D
 	public override void _PhysicsProcess(double delta)
 	{
 		if (health.IsDead())
-			return;	
+			movementController.SetInput(NullInput.Input);
 		movementController.Update(delta);
 		attackController.Update(delta);
 		InvincibleHandler(delta);

@@ -29,17 +29,20 @@ public class MovementController
 
     public event Action<string> OnMovementStateChanged;
     protected MovementState currentState = MovementState.Idle;
+    public float SpeedRatio => Mathf.Clamp(Mathf.Abs(currentSpeed) / settings.MaxSpeed, 0.1f, 1f);
 
-
-        public MovementController(CharacterBody2D character, IInputProvider input, CharacterSettings settings)
+    public MovementController(CharacterBody2D character, IInputProvider input, CharacterSettings settings)
     {
         this.character = character;
         this.input = input;
         this.settings = settings;
     }
-
-
-    public float SpeedRatio => Mathf.Clamp(Mathf.Abs(currentSpeed) / settings.MaxSpeed, 0.1f, 1f);
+    
+    public void SetInput(IInputProvider input)
+    {
+        this.input = input;
+    }
+    
 
     public void Update(double delta)
     {

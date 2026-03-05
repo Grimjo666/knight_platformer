@@ -5,6 +5,7 @@ public class AnimationController {
 	protected AnimationNodeStateMachinePlayback state;
 	private CharacterBody2D character;
 	private MovementController movementController;
+	bool isLocked;
 
 
 	public AnimationController(CharacterBody2D character, MovementController movementController) {
@@ -22,7 +23,18 @@ public class AnimationController {
 	}
 
 	public virtual void OnStateChanged(string stateName) {
+		
+		if (isLocked)
+			return;
+
+		if (stateName == "Died")
+		{	
+			state.Travel(stateName);
+			isLocked = true;
+		}
+		
 		state.Travel(stateName);
+
 	}
 	
 }
