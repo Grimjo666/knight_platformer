@@ -12,15 +12,20 @@ public class PatrolBehavior : IAIBehavior
 {
     private CharacterBody2D character;
     private AICharacterSensors sensors;
+
     private float minX, maxX;
     private int dir = 1;
     private PatrolState state = PatrolState.Walking;
     private double waitTimer = 0f;
-    private bool jumpRequested;
     private const double TurnPause = 1f;
     private float baseRange;
     private float rangeRandomness = 60f;
 
+    // Прыжок
+    private bool jumpRequested;
+    private bool jumpPending; // флаг, чтобы не прыгать каждый кадр
+    private double jumpHoldTimer = 0;
+    private const double JumpHoldDuration = 0.2;
 
     public PatrolBehavior(CharacterBody2D character, float range, AICharacterSensors sensors)
     {
@@ -35,7 +40,7 @@ public class PatrolBehavior : IAIBehavior
         switch (state)
         {
             case PatrolState.Walking:
-                UpdateWalking();
+                UpdateWalking(delta);
                 break;
 
             case PatrolState.WaitingBeforeTurn:
@@ -51,47 +56,61 @@ public class PatrolBehavior : IAIBehavior
     }
 
     private void RecalculatePatrolRange()
-{
-    float center = character.GlobalPosition.X;
-
-    float randomOffset = (float)GD.RandRange(-rangeRandomness, rangeRandomness);
-    float finalRange = baseRange + randomOffset;
-
-    minX = center - finalRange;
-    maxX = center + finalRange;
-}
-
-
-    private void UpdateWalking()
     {
-        float x = character.GlobalPosition.X;
-;
+        float center = character.GlobalPosition.X;
+        float randomOffset = (float)GD.RandRange(-rangeRandomness, rangeRandomness);
+        float finalRange = baseRange + randomOffset;
+        minX = center - finalRange;
+        maxX = center + finalRange;
+    }
 
-        // граница патруля — только если идём в неё
+    private void UpdateWalking(double delta)
+    {
+        // Таймер удержания для полупрыжка
+        if (jumpHoldTimer > 0)
+        {
+            jumpHoldTimer -= delta;
+        }
+        else
+        {
+            jumpRequested = false;
+        }
+
+        float x = character.GlobalPosition.X;
+
+        // Поворот на границах патруля
         if ((x <= minX && dir < 0) || (x >= maxX && dir > 0))
-        {   
+        {
             StartTurnPause();
             return;
         }
 
-        // стена
+        // Стена
         if (sensors.IsFacingWall())
         {
             StartTurnPause();
             return;
         }
 
-        // обрыв — только если стоим на земле
+        // Обрыв
         if (character.IsOnFloor() && !sensors.IsOnFloor())
         {
             StartTurnPause();
             return;
         }
 
-        // ступенька
-        if (sensors.IsFacingStage())
+        // Ступенька — прыгаем один раз
+        if (sensors.IsFacingStage() && !jumpPending && character.IsOnFloor())
         {
             jumpRequested = true;
+            jumpPending = true;
+            jumpHoldTimer = JumpHoldDuration; // старт полупрыжка
+        }
+
+        // Сброс флага, когда персонаж отрывается от земли
+        if (!character.IsOnFloor())
+        {
+            jumpPending = false;
         }
     }
 
@@ -101,21 +120,22 @@ public class PatrolBehavior : IAIBehavior
         waitTimer = TurnPause;
     }
 
-
     public Vector2 GetDirection()
     {
-        return state == PatrolState.Walking
-            ? new Vector2(dir, 0)
-            : Vector2.Zero;
+        return state == PatrolState.Walking ? new Vector2(dir, 0) : Vector2.Zero;
     }
 
     public bool IsJumpPressed()
     {
         if (jumpRequested)
         {
-            jumpRequested = false;
             return true;
         }
         return false;
+    }
+
+    public bool IsJumpHeld()
+    {
+        return jumpHoldTimer > 0;
     }
 }

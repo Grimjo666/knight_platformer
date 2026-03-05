@@ -6,6 +6,7 @@ public interface IAIBehavior
 
     Vector2 GetDirection();
     bool IsJumpPressed();
+    bool IsJumpHeld();
 }
 
 
@@ -41,4 +42,7 @@ public class AIBehaviorController : IInputProvider
 
     public bool IsAttackPressed()
         => false; // AI does not attack for now
+
+    public bool IsJumpHeld()
+        => current?.IsJumpHeld() ?? false;
 }

@@ -25,6 +25,14 @@ public class MovementController
     private float knockbackDuration;
     private float knockbackHorizontalDamping;
 
+    // Настройки окна прыжков
+    private float coyoteTimer, jumpBufferTimer = 0f;
+    private float coyoteTime = 0.12f;
+    private float jumpBufferTime = 0.12f;
+
+    public float JumpCutMultiplier = 0.5f;
+    private bool jumpCutApplied = false;
+
     protected IInputProvider input;
 
     public event Action<string> OnMovementStateChanged;
@@ -42,7 +50,6 @@ public class MovementController
     {
         this.input = input;
     }
-    
 
     public void Update(double delta)
     {
@@ -56,49 +63,116 @@ public class MovementController
 
         Vector2 velocity = character.Velocity;
 
-        if (!character.IsOnFloor())
-            velocity += character.GetGravity() * deltaF;
+        ApplyGravity(ref velocity, deltaF);
 
         Vector2 direction = input.GetDirection();
-        currentSpeed = Mathf.MoveToward(velocity.X, direction.X * settings.MaxSpeed, settings.Acceleration * deltaF);
+        UpdateJumpTimers(deltaF);
 
-        MovementState newState = currentState;
+        MovementState newState = HandleJump(ref velocity);
 
-        if (input.IsJumpPressed() && character.IsOnFloor())
-        {
-            velocity.Y = settings.JumpVelocity;
-            newState = MovementState.Jump;
-        }
-        else if (character.IsOnFloor())
-        {
-            if (CheckIsTurnAround(direction.X))
-                newState = MovementState.TurnAround;
-            else if (Mathf.Abs(currentSpeed) > 0.01f)
-            {
-                newState = MovementState.Run;
-                velocity.X = currentSpeed;
-            }
-            else
-            {
-                newState = MovementState.Idle;
-                velocity.X = Mathf.MoveToward(velocity.X, 0, settings.Friction * deltaF);
-            }
-        }
-        else
-        {
-            velocity.X = currentSpeed;
-        }
+        ApplyHalfJump(ref velocity);
 
-        if (newState != currentState)
-        {
-            currentState = newState;
-            OnMovementStateChanged?.Invoke(newState.ToString());
-        }
+        if (newState == currentState)
+            newState = HandleGroundMovement(ref velocity, direction, deltaF);
+
+        UpdateState(newState);
 
         character.Velocity = velocity;
-        if (direction.X != 0) previousDirectionX = (int)direction.X;
-
+        UpdateDirection(direction);
         character.MoveAndSlide();
+    }
+
+    private void UpdateJumpTimers(float delta)
+    {
+        if (character.IsOnFloor())
+            coyoteTimer = coyoteTime;
+        else
+            coyoteTimer -= delta;
+
+        if (input.IsJumpPressed())
+            jumpBufferTimer = jumpBufferTime;
+        else
+            jumpBufferTimer -= delta;
+    }
+
+    private MovementState HandleJump(ref Vector2 velocity)
+    {
+        if (CanJump())
+        {
+            velocity.Y = settings.JumpVelocity;
+
+            jumpBufferTimer = 0f;
+            coyoteTimer = 0f;
+
+            return MovementState.Jump;
+        }
+
+        return currentState;
+    }
+
+    private MovementState HandleGroundMovement(ref Vector2 velocity, Vector2 direction, float delta)
+    {
+        currentSpeed = Mathf.MoveToward(
+            velocity.X,
+            direction.X * settings.MaxSpeed,
+            settings.Acceleration * delta
+        );
+
+        if (!character.IsOnFloor())
+        {
+            velocity.X = currentSpeed;
+            return currentState;
+        }
+
+        if (CheckIsTurnAround(direction.X))
+            return MovementState.TurnAround;
+
+        if (Mathf.Abs(currentSpeed) > 0.01f)
+        {
+            velocity.X = currentSpeed;
+            return MovementState.Run;
+        }
+
+        velocity.X = Mathf.MoveToward(velocity.X, 0, settings.Friction * delta);
+        return MovementState.Idle;
+    }
+
+    private void UpdateState(MovementState newState)
+    {
+        if (newState == currentState)
+            return;
+
+        currentState = newState;
+        OnMovementStateChanged?.Invoke(newState.ToString());
+    }
+
+    private void UpdateDirection(Vector2 direction)
+    {
+        if (direction.X != 0)
+            previousDirectionX = (int)direction.X;
+    }
+
+    private void ApplyGravity(ref Vector2 velocity, float delta)
+    {
+        if (!character.IsOnFloor())
+            velocity += character.GetGravity() * delta;
+    }
+
+    private bool CanJump()
+    {
+        return jumpBufferTimer > 0f && coyoteTimer > 0f;
+    }
+
+    private void ApplyHalfJump(ref Vector2 velocity)
+    {
+        if (!jumpCutApplied && !input.IsJumpHeld() && velocity.Y < 0)
+        {
+            velocity.Y *= JumpCutMultiplier;
+            jumpCutApplied = true;
+        }
+
+        if (character.IsOnFloor())
+            jumpCutApplied = false;
     }
 
     protected bool CheckIsTurnAround(float directionX)

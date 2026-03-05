@@ -7,6 +7,7 @@ public class NullInputProvider : IInputProvider
     public bool IsJumpPressed() => false;
 
     public bool IsAttackPressed() => false;
+    public bool IsJumpHeld() => false;
 }
 
 public static class NullInput

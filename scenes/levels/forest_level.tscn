@@ -654,10 +654,12 @@ position = Vector2(1019, 975)
 collision_layer = 4
 
 [node name="Skeleton2" parent="." instance=ExtResource("10_150c5")]
+visible = false
 position = Vector2(1249, 1023)
 collision_layer = 4
 
 [node name="Skeleton3" parent="." instance=ExtResource("10_150c5")]
+visible = false
 position = Vector2(1435, 961)
 collision_layer = 4
 

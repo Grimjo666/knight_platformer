@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://cryl0amptmlo3"]
+[gd_scene load_steps=62 format=3 uid="uid://cryl0amptmlo3"]
 
 [ext_resource type="Script" uid="uid://b47sjgootk0pw" path="res://scripts/characters/mobs/skeleton/Skeleton.cs" id="1_4e6sq"]
 [ext_resource type="Texture2D" uid="uid://ngef6jvd2bs3" path="res://assets/Monsters_Creatures_Fantasy/Skeleton/Attack.png" id="1_c0qur"]
@@ -214,11 +214,40 @@ tracks/1/keys = {
 "values": [0, 1, 2, 3]
 }
 
+[sub_resource type="Animation" id="Animation_fop2n"]
+resource_name = "Jump"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("RotationRoot/AnimatedSprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"Jump"]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("RotationRoot/AnimatedSprite2D:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_w5bd4"]
 _data = {
 &"Attack": SubResource("Animation_qt445"),
 &"Death": SubResource("Animation_30eyj"),
 &"Idle": SubResource("Animation_5e11k"),
+&"Jump": SubResource("Animation_fop2n"),
 &"RESET": SubResource("Animation_53m4w"),
 &"Shield": SubResource("Animation_2x537"),
 &"TakeHit": SubResource("Animation_ype02"),
@@ -227,6 +256,9 @@ _data = {
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4e6sq"]
 animation = &"Idle"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_66bye"]
+animation = &"Jump"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5e11k"]
 animation = &"Walk"
@@ -237,13 +269,20 @@ animation = &"Walk"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_if0j1"]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_wkqwc"]
+advance_mode = 0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_k18w4"]
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_u54uo"]
 states/Idle/node = SubResource("AnimationNodeAnimation_4e6sq")
 states/Idle/position = Vector2(174.29138, 123)
+states/Jump/node = SubResource("AnimationNodeAnimation_66bye")
+states/Jump/position = Vector2(174.29138, 226)
 states/Run/node = SubResource("AnimationNodeAnimation_5e11k")
 states/Run/position = Vector2(333.29138, 109)
 states/Start/position = Vector2(-32, 109)
-transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_4e6sq"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_53m4w"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_if0j1")]
+transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_4e6sq"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_53m4w"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_if0j1"), "Idle", "Jump", SubResource("AnimationNodeStateMachineTransition_wkqwc"), "Jump", "Idle", SubResource("AnimationNodeStateMachineTransition_k18w4")]
 graph_offset = Vector2(-365.70862, 32)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_5e11k"]
@@ -321,6 +360,10 @@ region = Rect2(300, 0, 150, 150)
 [sub_resource type="AtlasTexture" id="AtlasTexture_t1s6s"]
 atlas = ExtResource("3_5e11k")
 region = Rect2(450, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t7lc0"]
+atlas = ExtResource("6_30eyj")
+region = Rect2(150, 0, 150, 150)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_l3sb5"]
 atlas = ExtResource("4_53m4w")
@@ -434,6 +477,14 @@ animations = [{
 "loop": true,
 "name": &"Idle",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t7lc0")
+}],
+"loop": true,
+"name": &"Jump",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,

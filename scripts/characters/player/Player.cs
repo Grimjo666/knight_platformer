@@ -17,6 +17,11 @@ public class PlayerInputProvider : IInputProvider
 	{
 		return Input.IsActionJustPressed("attack");
 	}
+
+	public bool IsJumpHeld()
+	{
+		return Input.IsActionPressed("ui_accept");
+	}
 }
 
 public partial class Player : CharacterBody2D

@@ -6,5 +6,6 @@ public interface IInputProvider
     bool IsJumpPressed();
 
     bool IsAttackPressed();
+    bool IsJumpHeld();
 
 }
