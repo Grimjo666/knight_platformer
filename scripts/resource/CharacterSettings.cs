@@ -9,9 +9,9 @@ public partial class CharacterSettings : Resource
 	[Export] public float Friction = 1200f;
 	[Export] public float JumpVelocity = -400f;
 
-	[ExportGroup("Knockback")]
-	[Export] public float KnockbackHorizontal = 160f;
-	[Export] public float KnockbackUpward = 180f;
-	[Export] public float KnockbackDuration = 0.5f;
-	[Export] public float KnockbackDamping = 500f;
+	[ExportGroup("Physics")]
+	[Export] public float Weight = 1f;
+
+	[ExportGroup("Health")]
+	[Export] public float MaxHealth = 100f;
 }

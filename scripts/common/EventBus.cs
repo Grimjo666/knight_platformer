@@ -3,16 +3,11 @@ using Godot;
 
 public static class EventBus
 {
-    public static event Action<string> StateChanged;
-    public static event Action<int, int> HealthChanged;
+    public static event Action<float, float> HealthChanged;
 
-    public static void PublishCharacterStateChanged(string stateName)
+    public static void PlayerHealthChanged(float currentHealth, float maxHealth)
     {
-        StateChanged?.Invoke(stateName);
-    }
-
-    public static void PublishHealthChanged(int currentHealth, int maxHealth)
-    {
+        GD.Print($"Событие: здоровье изменилось. Текущее: {currentHealth}, Макс: {maxHealth}");
         HealthChanged?.Invoke(currentHealth, maxHealth);
     }
 }

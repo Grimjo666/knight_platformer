@@ -33,6 +33,10 @@ public class MovementController
     public float JumpCutMultiplier = 0.5f;
     private bool jumpCutApplied = false;
 
+
+    // Настройки knockback
+    private float KnockbackDamping = 500f;
+
     protected IInputProvider input;
 
     public event Action<string> OnMovementStateChanged;
@@ -182,20 +186,24 @@ public class MovementController
                (Mathf.Abs(Mathf.Abs(currentSpeed) - settings.MaxSpeed) < 70f);
     }
 
-    public void ApplyKnockback(Vector2 source)
+    public void ApplyKnockback(Vector2 source, AttackData attackData)
     {
         float directionX = Mathf.Sign(character.GlobalPosition.X - source.X);
         if (Mathf.Abs(directionX) < Mathf.Epsilon)
             directionX = previousDirectionX != 0 ? previousDirectionX : 1f;
 
-        knockbackDuration = Mathf.Max(0.01f, settings.KnockbackDuration);
-        knockbackHorizontalDamping = Mathf.Max(0f, settings.KnockbackDamping);
+        // горизонтальная и вертикальная сила отбрасывания с учётом веса
+        float horizontalKnockback = attackData.KnockbackPower / settings.Weight;
+        float upwardKnockback = (attackData.KnockbackPower / settings.Weight) * 0.8f; // вверх чуть меньше
+
+        knockbackDuration = Mathf.Max(0.01f, attackData.KnockbackDuration);
+        knockbackHorizontalDamping = Mathf.Max(0f, KnockbackDamping);
         knockbackTimer = knockbackDuration;
 
         IsKnockbackActive = true;
         currentSpeed = 0f;
 
-        character.Velocity = new Vector2(directionX * Mathf.Abs(settings.KnockbackHorizontal), -Mathf.Abs(settings.KnockbackUpward));
+        character.Velocity = new Vector2(directionX * horizontalKnockback, -upwardKnockback);
     }
 
     private void UpdateKnockback(float delta)

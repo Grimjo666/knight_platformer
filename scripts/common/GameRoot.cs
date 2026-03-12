@@ -26,8 +26,8 @@ public partial class GameRoot : Node
 		_levelContainer.AddChild(instance);
 	}
 
-	public void ChangeHealthBar(int currentHealth, int maxHealth)
+	public void ChangeHealthBar(float currentHealth, float maxHealth)
 	{
-		healthBar.Value = (float)currentHealth / maxHealth * 100f;
+		healthBar.Value = currentHealth / maxHealth * 100f;
 	}
 }

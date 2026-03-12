@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CharacterSettings" load_steps=2 format=3 uid="uid://ccg6hlc3ekm3n"]
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://ccg6hlc3ekm3n"]
 
 [ext_resource type="Script" uid="uid://d0e25ira12tkl" path="res://scripts/resource/CharacterSettings.cs" id="1_tl1kn"]
 
@@ -7,4 +7,6 @@ script = ExtResource("1_tl1kn")
 MaxSpeed = 80.0
 Acceleration = 500.0
 Friction = 1000.0
+JumpVelocity = null
+Weight = 1.005
 metadata/_custom_type_script = "uid://d0e25ira12tkl"

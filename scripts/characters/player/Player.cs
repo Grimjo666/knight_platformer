@@ -24,17 +24,12 @@ public class PlayerInputProvider : IInputProvider
 	}
 }
 
-public partial class Player : CharacterBody2D
+public partial class Player : BaseCharacter
 {
 
-	private MovementController movementController;
 	private AnimationController animationController;
 	private AttackController attackController;
-	private Health health;
-	private bool isInvincible = false;
-	private float invincibilityTimer = 0f;
-	public float InvincibilityDuration = 0.5f;
-	[Export] public PackedScene AttackScene;
+	[Export] public HitBox SwordHitBox;
 
 	[Export]
 	public CharacterSettings PlayerSettings;
@@ -42,24 +37,25 @@ public partial class Player : CharacterBody2D
 	public override void _Ready()
 	{	
 		var inputProvider = new PlayerInputProvider();
-		health = new Health();
 		movementController = new MovementController(this, inputProvider, PlayerSettings);
+		InitCharacter(PlayerSettings, movementController);
 		animationController = new AnimationController(this, movementController); 
-		attackController = new AttackController(this, AttackScene, inputProvider);
+		attackController = new AttackController(this, SwordHitBox, inputProvider);
 
 		// Проброс событий в анимационный контроллер
 		health.OnHealthStateChanged += animationController.OnStateChanged;
 		movementController.OnMovementStateChanged += animationController.OnStateChanged;
+		attackController.OnAttackStateChanged += animationController.OnStateChanged;
+
+		health.OnHealthChanged += OnHealthChanged;
+
+		SwordHitBox.Disable(); // Деактивируем хитбокс атаки по умолчанию
 
 	}
 
-	public override void _PhysicsProcess(double delta)
+	public override void PhysicsUpdate(double delta)
 	{
-		if (health.IsDead())
-			movementController.SetInput(NullInput.Input);
-		movementController.Update(delta);
 		attackController.Update(delta);
-		InvincibleHandler(delta);
 	}
 
 	public override void _Process(double delta)
@@ -68,6 +64,11 @@ public partial class Player : CharacterBody2D
 		HandleFlip();
 	}
 
+	private void OnHealthChanged(float currentHealth, float maxHealth)
+	{
+		EventBus.PlayerHealthChanged(currentHealth, maxHealth);
+		EnableInvincibility(2.5f);
+	}
 
 	private void HandleFlip()
 	{
@@ -78,35 +79,5 @@ public partial class Player : CharacterBody2D
 		rotationRoot.Scale = new Vector2(Velocity.X < 0 ? -1 : 1, 1);
 	}
 
-	protected void InvincibleHandler(double delta)
-	{
-		if (isInvincible)
-		{
-			invincibilityTimer -= (float)delta;
-			if (invincibilityTimer <= 0f)
-				isInvincible = false;
-		}
-	} 
-	
-
-	public void _on_hurt_box_area_entered(Area2D area)
-	{
-		if (area.IsInGroup("mobs_hitbox") && !isInvincible)
-		{
-			var enemy = area.Owner as BaseEnemy;
-			if (enemy != null)
-			{
-
-				isInvincible = true;
-				invincibilityTimer = InvincibilityDuration;
-
-				health.TakeDamage(enemy.CollisionDamage);
-				if (!health.IsDead())
-				{
-					movementController.ApplyKnockback(enemy.GlobalPosition);
-				}
-			}
-		}
-	}
 
 }

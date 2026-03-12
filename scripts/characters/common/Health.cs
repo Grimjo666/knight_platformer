@@ -11,23 +11,26 @@ public enum HealthState
 
 public class Health
 {
-    int MaxHealth = 100;
-    public int CurrentHealth;
+    public float MaxHealth;
+    public float CurrentHealth;
     public event Action<string> OnHealthStateChanged;
+    public event Action<float, float> OnHealthChanged;
 
-    public Health()
+    public Health(float maxHealth)
     {
+        MaxHealth = maxHealth;
         CurrentHealth = MaxHealth;
     }
 
     
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         CurrentHealth -= damage;
-        EventBus.PublishHealthChanged(CurrentHealth, MaxHealth);
-
+        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);   
+        
         if (CurrentHealth > 0)
-            OnHealthStateChanged?.Invoke(HealthState.TakeDamage.ToString());        
+            OnHealthStateChanged?.Invoke(HealthState.TakeDamage.ToString());     
+
         
         else
             CurrentHealth = 0;
@@ -36,7 +39,7 @@ public class Health
             OnHealthStateChanged?.Invoke(HealthState.Died.ToString());
     }
 
-    public void Heal(int amount)
+    public void Heal(float amount)
     {
         CurrentHealth += amount;
         if (CurrentHealth > MaxHealth)

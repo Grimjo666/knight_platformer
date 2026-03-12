@@ -1,0 +1,11 @@
+[gd_resource type="Resource" load_steps=2 format=3 uid="uid://bnm7r0v2choax"]
+
+[ext_resource type="Script" uid="uid://b4dgw6xqrd4bk" path="res://scripts/resource/AttackData.cs" id="1_jd8p5"]
+
+[resource]
+script = ExtResource("1_jd8p5")
+Damage = 46.345
+Cooldown = 0.255
+KnockbackPower = 5.62
+KnockbackDuration = 0.4
+metadata/_custom_type_script = "uid://b4dgw6xqrd4bk"
