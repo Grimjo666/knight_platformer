@@ -1,4 +1,4 @@
-[gd_scene load_steps=96 format=3 uid="uid://w4hi5bk1a3e8"]
+[gd_scene load_steps=98 format=3 uid="uid://w4hi5bk1a3e8"]
 
 [ext_resource type="Script" uid="uid://k5tcxb017uaf" path="res://scripts/characters/player/Player.cs" id="1_5y6fm"]
 [ext_resource type="Texture2D" uid="uid://vfgl4pr6vi5" path="res://assets/player/_Idle.png" id="1_f3rfl"]
@@ -12,6 +12,8 @@
 [ext_resource type="Texture2D" uid="uid://cxlrj005d1m0p" path="res://assets/player/_Attack2NoMovement.png" id="8_bsn6e"]
 [ext_resource type="Script" uid="uid://cfp1qef00uhdi" path="res://scripts/characters/common/HitBox.cs" id="11_blysn"]
 [ext_resource type="Resource" uid="uid://bnm7r0v2choax" path="res://resources/attack_data/player_sword_attack.tres" id="12_bsn6e"]
+[ext_resource type="Script" uid="uid://c208pwff8erer" path="res://scripts/characters/combat/AttackController.cs" id="13_blysn"]
+[ext_resource type="AudioStream" uid="uid://difoys1w604v6" path="res://assets/sounds/weapon/swipe.wav" id="14_hv5x3"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_51gi7"]
 radius = 8.0
@@ -173,6 +175,23 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [0, 1, 2, 3, 4, 5]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AttackController")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.2, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"AttackStart"
+}, {
+"args": [],
+"method": &"AttackEnd"
+}]
 }
 
 [sub_resource type="Animation" id="Animation_xuses"]
@@ -695,7 +714,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gpigg"]
-size = Vector2(8, 19)
+size = Vector2(18, 19)
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("SwordHitBox")]
 script = ExtResource("1_5y6fm")
@@ -737,7 +756,7 @@ shape = SubResource("RectangleShape2D_mkbyt")
 position = Vector2(4, -15)
 scale = Vector2(0.75, 0.75)
 sprite_frames = SubResource("SpriteFrames_hbqia")
-animation = &"Idle"
+animation = &"SwordAttack"
 autoplay = "Idle"
 frame = 1
 
@@ -753,7 +772,14 @@ AttackData = ExtResource("12_bsn6e")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RotationRoot/WeaponSocket/Sword/Hitbox"]
 modulate = Color(1, 0, 1, 1)
-position = Vector2(29, -0.5)
+position = Vector2(24, -0.5)
 shape = SubResource("RectangleShape2D_gpigg")
+
+[node name="AttackController" type="Node" parent="." node_paths=PackedStringArray("swordSound")]
+script = ExtResource("13_blysn")
+swordSound = NodePath("SwordSound")
+
+[node name="SwordSound" type="AudioStreamPlayer" parent="AttackController"]
+stream = ExtResource("14_hv5x3")
 
 [connection signal="area_entered" from="RotationRoot/WeaponSocket/Sword/Hitbox" to="RotationRoot/WeaponSocket/Sword/Hitbox" method="_on_area_entered"]

@@ -74,4 +74,5 @@ public abstract partial class BaseCharacter : CharacterBody2D
 
 	public void RegisterHitbox(HitBox hitbox) => hitboxes.Add(hitbox);
 	public void RegisterHurtbox(HurtBox hurtbox) => this.hurtbox = hurtbox;
+
 }

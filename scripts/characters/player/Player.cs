@@ -40,7 +40,9 @@ public partial class Player : BaseCharacter
 		movementController = new MovementController(this, inputProvider, PlayerSettings);
 		InitCharacter(PlayerSettings, movementController);
 		animationController = new AnimationController(this, movementController); 
-		attackController = new AttackController(this, SwordHitBox, inputProvider);
+		
+		attackController = GetNode<AttackController>("AttackController");
+		attackController.Init(this, SwordHitBox, inputProvider);
 
 		// Проброс событий в анимационный контроллер
 		health.OnHealthStateChanged += animationController.OnStateChanged;
@@ -48,8 +50,6 @@ public partial class Player : BaseCharacter
 		attackController.OnAttackStateChanged += animationController.OnStateChanged;
 
 		health.OnHealthChanged += OnHealthChanged;
-
-		SwordHitBox.Disable(); // Деактивируем хитбокс атаки по умолчанию
 
 	}
 
@@ -78,6 +78,5 @@ public partial class Player : BaseCharacter
 		var rotationRoot = GetNode<Node2D>("RotationRoot");
 		rotationRoot.Scale = new Vector2(Velocity.X < 0 ? -1 : 1, 1);
 	}
-
 
 }

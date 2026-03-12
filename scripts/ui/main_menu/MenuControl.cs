@@ -10,6 +10,6 @@ public partial class MenuControl : Control
 
 	private void _on_play_btn_pressed()
 	{
-		GetTree().ChangeSceneToFile("res://scenes/common/game_root.tscn");
+		GetTree().ChangeSceneToFile("res://scenes/core/game_root.tscn");
 	}
 }
