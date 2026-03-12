@@ -1,12 +1,12 @@
 [gd_scene load_steps=8 format=3 uid="uid://bgr4vnie8j3ep"]
 
-[ext_resource type="Script" uid="uid://d25anhelxb772" path="res://scripts/menus/main_menu/Bg.cs" id="1_3ghwr"]
+[ext_resource type="Script" uid="uid://d25anhelxb772" path="res://scripts/ui/main_menu/Bg.cs" id="1_3ghwr"]
 [ext_resource type="Texture2D" uid="uid://cqg5s7k4y0bbn" path="res://assets/Jungle Asset Pack/parallax background/plx-1.png" id="1_bgl73"]
 [ext_resource type="Texture2D" uid="uid://cy5sberdmwvrw" path="res://assets/Jungle Asset Pack/parallax background/plx-2.png" id="3_gfk3y"]
 [ext_resource type="Texture2D" uid="uid://cn1ikxtv5feuv" path="res://assets/Jungle Asset Pack/parallax background/plx-3.png" id="4_1w5rp"]
 [ext_resource type="Texture2D" uid="uid://dm8bulrwb4jb5" path="res://assets/Jungle Asset Pack/parallax background/plx-4.png" id="5_qp7hy"]
 [ext_resource type="Texture2D" uid="uid://bxwbn4flajvh5" path="res://assets/Jungle Asset Pack/parallax background/plx-5.png" id="6_j4fae"]
-[ext_resource type="Script" uid="uid://dv1lql6hd4ypm" path="res://scripts/menus/main_menu/MenuControl.cs" id="7_1w5rp"]
+[ext_resource type="Script" uid="uid://dv1lql6hd4ypm" path="res://scripts/ui/main_menu/MenuControl.cs" id="7_1w5rp"]
 
 [node name="main_menu" type="Node2D"]
 

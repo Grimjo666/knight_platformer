@@ -28,7 +28,7 @@ public partial class HitBox : Area2D
 				hurt.ReceiveHit(AttackData, OwnerCharacter);
 			}
 			// Враг бьет игрока
-			else if (OwnerCharacter is Enemy && area.IsInGroup("player_hurtbox"))
+			else if (OwnerCharacter is not Player && area.IsInGroup("player_hurtbox"))
 			{	
 				hurt.ReceiveHit(AttackData, OwnerCharacter);
 			}

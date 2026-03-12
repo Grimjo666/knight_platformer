@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://cijxvmbo4avnj" path="res://assets/Jungle Asset Pack/jungle tileset/jungle tileset.png" id="7_el3cg"]
 [ext_resource type="Texture2D" uid="uid://cjcn1qp2uil8g" path="res://assets/Pixel Woods Asset Pack/Tileset/Pixel_Woods_Tileset.png" id="8_tjxid"]
 [ext_resource type="PackedScene" uid="uid://w4hi5bk1a3e8" path="res://scenes/characters/player/player.tscn" id="9_oa5c5"]
-[ext_resource type="PackedScene" uid="uid://cryl0amptmlo3" path="res://scenes/characters/mobs/skeleton.tscn" id="10_150c5"]
+[ext_resource type="PackedScene" uid="uid://cryl0amptmlo3" path="res://scenes/characters/enemies/skeleton.tscn" id="10_150c5"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_tjxid"]
 texture = ExtResource("7_el3cg")

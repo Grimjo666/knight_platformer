@@ -1,9 +1,9 @@
 [gd_scene load_steps=69 format=3 uid="uid://cryl0amptmlo3"]
 
-[ext_resource type="Script" uid="uid://b47sjgootk0pw" path="res://scripts/characters/mobs/skeleton/Skeleton.cs" id="1_4e6sq"]
+[ext_resource type="Script" uid="uid://b47sjgootk0pw" path="res://scripts/characters/enemies/skeleton/Skeleton.cs" id="1_4e6sq"]
 [ext_resource type="Texture2D" uid="uid://ngef6jvd2bs3" path="res://assets/Monsters_Creatures_Fantasy/Skeleton/Attack.png" id="1_c0qur"]
 [ext_resource type="Texture2D" uid="uid://f1ygaq3htk14" path="res://assets/Monsters_Creatures_Fantasy/Skeleton/Death.png" id="2_4e6sq"]
-[ext_resource type="Resource" uid="uid://ccg6hlc3ekm3n" path="res://resources/character_setting/mobs/skeleton_settings.tres" id="2_fop2n"]
+[ext_resource type="Resource" uid="uid://ccg6hlc3ekm3n" path="res://resources/character_setting/enemies/skeleton_settings.tres" id="2_fop2n"]
 [ext_resource type="Texture2D" uid="uid://c5flm1bumxtcv" path="res://assets/Monsters_Creatures_Fantasy/Skeleton/Idle.png" id="3_5e11k"]
 [ext_resource type="Script" uid="uid://cfp1qef00uhdi" path="res://scripts/characters/common/HitBox.cs" id="3_wkqwc"]
 [ext_resource type="Texture2D" uid="uid://dsjfxfda0ro80" path="res://assets/Monsters_Creatures_Fantasy/Skeleton/Shield.png" id="4_53m4w"]

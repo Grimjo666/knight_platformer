@@ -1,7 +1,7 @@
 using Godot;
 using System.Linq;
 
-public partial class Skeleton : Enemy
+public partial class Skeleton : BaseCharacter
 {
 	private AnimationController animationController;
 	private AIBehaviorController inputProvider;

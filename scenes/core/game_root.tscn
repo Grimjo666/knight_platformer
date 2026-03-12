@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bw4x447ivitae"]
 
-[ext_resource type="Script" uid="uid://b3ul4xcinm310" path="res://scripts/common/GameRoot.cs" id="1_ansoo"]
+[ext_resource type="Script" uid="uid://b3ul4xcinm310" path="res://scripts/core/GameRoot.cs" id="1_ansoo"]
 [ext_resource type="Texture2D" uid="uid://4nxfut7xpqlx" path="res://assets/healthbar/HealthBar DARK.png" id="2_rps3v"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_y4ves"]
