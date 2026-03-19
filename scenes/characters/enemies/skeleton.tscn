@@ -1,4 +1,4 @@
-[gd_scene load_steps=74 format=3 uid="uid://cryl0amptmlo3"]
+[gd_scene load_steps=75 format=3 uid="uid://cryl0amptmlo3"]
 
 [ext_resource type="Script" uid="uid://b47sjgootk0pw" path="res://scripts/characters/enemies/skeleton/Skeleton.cs" id="1_4e6sq"]
 [ext_resource type="Texture2D" uid="uid://ngef6jvd2bs3" path="res://assets/Monsters_Creatures_Fantasy/Skeleton/Attack.png" id="1_c0qur"]
@@ -260,6 +260,9 @@ _data = {
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_plj7n"]
 animation = &"BaseAttack"
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_iexri"]
+animation = &"Died"
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0fko8"]
 animation = &"Idle"
 
@@ -317,6 +320,8 @@ advance_mode = 2
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_u54uo"]
 states/BaseAttack/node = SubResource("AnimationNodeAnimation_plj7n")
 states/BaseAttack/position = Vector2(559.2914, 171)
+states/Died/node = SubResource("AnimationNodeAnimation_iexri")
+states/Died/position = Vector2(672.2914, 183)
 states/Idle/node = SubResource("AnimationNodeAnimation_0fko8")
 states/Idle/position = Vector2(193.29138, 126)
 states/Jump/node = SubResource("AnimationNodeAnimation_5s6jl")
@@ -665,4 +670,5 @@ sprite_frames = SubResource("SpriteFrames_oxsnf")
 animation = &"Idle"
 autoplay = "Idle"
 
-[connection signal="area_entered" from="HitBox" to="HitBox" method="_on_area_entered"]
+[connection signal="area_entered" from="HitBox" to="HitBox" method="OnAreaEntered"]
+[connection signal="area_exited" from="HitBox" to="HitBox" method="OnAreaExited"]

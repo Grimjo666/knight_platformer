@@ -1,6 +1,4 @@
 using Godot;
-using System;
-using System.Linq;
 
 public class PlayerInputProvider : IInputProvider
 {
@@ -61,7 +59,7 @@ public partial class Player : BaseCharacter
 	private void OnHealthChanged(float currentHealth, float maxHealth)
 	{
 		EventBus.PlayerHealthChanged(currentHealth, maxHealth);
-		EnableInvincibility(2.5f);
+		EnableInvincibility(1.5f);
 	}
 
 }
