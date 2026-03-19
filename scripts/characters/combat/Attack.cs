@@ -13,7 +13,7 @@ public class Attack
 
     public void Apply(BaseCharacter target)
     {
-        var health = target.health;
+        var health = target.healthController;
         if (health != null)
             health.TakeDamage(Damage);
 

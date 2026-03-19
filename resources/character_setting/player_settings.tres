@@ -1,4 +1,4 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://ccouc43wq7ng"]
+[gd_resource type="Resource" script_class="CharacterSettings" load_steps=2 format=3 uid="uid://ccouc43wq7ng"]
 
 [ext_resource type="Script" uid="uid://d0e25ira12tkl" path="res://scripts/resource/CharacterSettings.cs" id="1_fqoly"]
 

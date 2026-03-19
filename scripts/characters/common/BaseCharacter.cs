@@ -4,10 +4,11 @@ using Godot;
 
 public abstract partial class BaseCharacter : CharacterBody2D
 {
-	public Health health;
+	public HealthController healthController;
 	private List<HitBox> hitboxes = new();
 	private HurtBox hurtbox;
 	public MovementController movementController;
+	public AnimationController animationController;
 
 	private bool deathHandled = false;
 
@@ -15,10 +16,11 @@ public abstract partial class BaseCharacter : CharacterBody2D
 	private bool isInvincible = false;
 	private float invincibilityTimer = 0f;
 
-	public void InitCharacter(CharacterSettings settings, MovementController movementController)
+	public void InitCharacter(CharacterSettings settings, MovementController movementController, AnimationController animationController)
 	{
-		health = new Health(settings.MaxHealth);
+		healthController = new HealthController(settings.MaxHealth);
 		this.movementController = movementController;
+		this.animationController = animationController;
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -31,7 +33,7 @@ public abstract partial class BaseCharacter : CharacterBody2D
 				isInvincible = false;
 		}
 
-		if (health.IsDead() && !deathHandled)
+		if (healthController.IsDead() && !deathHandled)
 		{
 			GD.Print($"{Name} умер.");
 			movementController.SetInput(NullInput.Input);
@@ -44,16 +46,22 @@ public abstract partial class BaseCharacter : CharacterBody2D
 		PhysicsUpdate(delta);
 	}
 
+	public override void _Process(double delta)
+	{
+		animationController.Update();
+		HandleFlip();
+	}
+
 	public virtual void PhysicsUpdate(double delta) { }
 
 	public void ReceiveHit(AttackData attack, BaseCharacter attacker)
 	{
-		if (health.IsDead() || isInvincible)
+		if (healthController.IsDead() || isInvincible)
 			return;
 
-		health.TakeDamage(attack.Damage);
+		healthController.TakeDamage(attack.Damage);
 
-		if (!health.IsDead())
+		if (!healthController.IsDead())
 			movementController.ApplyKnockback(attacker.GlobalPosition, attack);
 
 	}
@@ -74,5 +82,15 @@ public abstract partial class BaseCharacter : CharacterBody2D
 
 	public void RegisterHitbox(HitBox hitbox) => hitboxes.Add(hitbox);
 	public void RegisterHurtbox(HurtBox hurtbox) => this.hurtbox = hurtbox;
+
+	private void HandleFlip()
+	{
+		float flipSpeed = movementController.IsKnockbackActive ? movementController.currentSpeed : Velocity.X;
+		if (Mathf.Abs(flipSpeed) < 0.01f)
+			return;
+
+		var rotationRoot = GetNode<Node2D>("RotationRoot");
+		rotationRoot.Scale = new Vector2(flipSpeed < 0 ? -1 : 1, 1);
+	}
 
 }

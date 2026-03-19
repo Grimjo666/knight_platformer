@@ -10,7 +10,7 @@ public enum AttackState
 public partial class AttackController: Node
 {   
 
-	public event Action<string> OnAttackStateChanged;
+	public event Action<AttackState> AttackStateChanged;
 	private CharacterBody2D character;
 	private HitBox hitBox;
 	private IInputProvider input;
@@ -36,7 +36,7 @@ public partial class AttackController: Node
 
 	private void PerformAttack()
 	{
-		OnAttackStateChanged?.Invoke(AttackState.BaseAttack.ToString());
+		AttackStateChanged?.Invoke(AttackState.BaseAttack);
 	}
 
 	public void AttackStart()

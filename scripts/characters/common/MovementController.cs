@@ -7,8 +7,7 @@ public enum MovementState
     Idle,
     Run,
     Jump,
-    TurnAround,
-    Walk
+    TurnAround
 }
 
 
@@ -17,7 +16,7 @@ public class MovementController
     protected CharacterBody2D character;
 
     protected CharacterSettings settings;
-    protected float currentSpeed;
+    public float currentSpeed;
     protected int previousDirectionX;
 
     public bool IsKnockbackActive { get; private set; }
@@ -39,7 +38,7 @@ public class MovementController
 
     protected IInputProvider input;
 
-    public event Action<string> OnMovementStateChanged;
+    public event Action<MovementState> MovementStateChanged;
     protected MovementState currentState = MovementState.Idle;
     public float SpeedRatio => Mathf.Clamp(Mathf.Abs(currentSpeed) / settings.MaxSpeed, 0.1f, 1f);
 
@@ -147,7 +146,7 @@ public class MovementController
             return;
 
         currentState = newState;
-        OnMovementStateChanged?.Invoke(newState.ToString());
+        MovementStateChanged?.Invoke(newState);
     }
 
     private void UpdateDirection(Vector2 direction)

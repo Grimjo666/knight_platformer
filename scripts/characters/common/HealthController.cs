@@ -1,5 +1,4 @@
 using System;
-using Godot;
 
 public enum HealthState
 {
@@ -9,14 +8,14 @@ public enum HealthState
 }
 
 
-public class Health
+public class HealthController
 {
     public float MaxHealth;
     public float CurrentHealth;
-    public event Action<string> OnHealthStateChanged;
-    public event Action<float, float> OnHealthChanged;
+    public event Action<HealthState> HealthStateChanged;
+    public event Action<float, float> HealthChanged;
 
-    public Health(float maxHealth)
+    public HealthController(float maxHealth)
     {
         MaxHealth = maxHealth;
         CurrentHealth = MaxHealth;
@@ -26,17 +25,17 @@ public class Health
     public void TakeDamage(float damage)
     {
         CurrentHealth -= damage;
-        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);   
+        HealthChanged?.Invoke(CurrentHealth, MaxHealth);   
         
         if (CurrentHealth > 0)
-            OnHealthStateChanged?.Invoke(HealthState.TakeDamage.ToString());     
+            HealthStateChanged?.Invoke(HealthState.TakeDamage);     
 
         
         else
             CurrentHealth = 0;
         
         if (IsDead())
-            OnHealthStateChanged?.Invoke(HealthState.Died.ToString());
+            HealthStateChanged?.Invoke(HealthState.Died);
     }
 
     public void Heal(float amount)
@@ -47,6 +46,4 @@ public class Health
     }
 
     public bool IsDead() => CurrentHealth <= 0;
-
-    
 }
